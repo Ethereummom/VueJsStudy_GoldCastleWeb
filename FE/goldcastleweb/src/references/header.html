@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Jewellery Shopping</title>
+<link rel="stylesheet" href="./style.css">
+<style>
+/* Your CSS styles go here */
+</style>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+<!-- Replace any server-side logic and Java code with appropriate HTML structure and JavaScript as needed -->
+
+<div class="section" id="top">
+  <div class="container">
+    <div>
+      <div class="left"><p>Welcome To Rose Jewellery Store</p></div>
+      <div class="right">
+        <ul>
+          <li>
+            <!-- Your login and user-related content goes here -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- top end -->
+
+<!-- header start -->
+<div class="section" id="header">
+  <div class="container">
+    <div>
+      <div class="mail"><img src="<%=imgDir %>/message.png" alt="msg"><p>info@gmail.com</p></div>
+      <div class="logo"><img style="cursor:pointer;" onclick="location.href='/jewellery/index.jsp';" src="<%=imgDir %>/logo.png" alt="lg"></div>
+      <div class="shopping_cart">
+        <svg onclick="location.href='./getCartListForPageAction.be';" style="cursor:pointer; width:40px; height:40px;" aria-hidden="true" focusable="false" role="presentation" class="icon" viewBox="0 0 700 700">          
+          <!-- SVG icon content -->
+        </svg>
+        <div class="cart-count-bubble"  style="cursor:pointer;" onclick="location.href='./getCartListForPageAction.be';">
+          <span aria-hidden="true"> <%= cart_cnt %> </span>
+        </div>
+        <p  style="cursor:pointer;" onclick="location.href='getCartListForPageAction.be';">Shopping Cart</p>
+      </div>
+    </div>
+  </div>
+</div><!-- header end -->
+
+<!-- menu start -->
+<div class="section" id="menu">
+  <div class="container">
+    <div>
+      <ul>
+        <li style="cursor:pointer;" onclick="location.href='/jewellery/index.jsp';">Home</li>
+        <li style="cursor:pointer;" onclick="location.href='getJewelleryListForPageAction.be';">Product</li>
+      </ul>
+    </div>
+  </div>
+</div><!-- menu end -->
+
+<!-- Rest of your HTML content goes here -->
+
+</body>
+</html>
