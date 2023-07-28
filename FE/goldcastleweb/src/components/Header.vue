@@ -48,6 +48,7 @@
                     <ul>
                         <li style = "cursor:pointer;" @click = "goToHomePage">Home</li>
                         <li style = "cursor:pointer;" @click = "goToProductPage">Product</li>
+                        <li style = "cursor:pointer;" @click = "goToContactPage">Contact</li>
                     </ul>
                 </div>
             </div>

@@ -16,6 +16,12 @@ public class Product {
     @Column(name = "pcategory", nullable = false)
     private String pcategory;
 
+    @Column(name = "pname", nullable = false)
+    private String pname;
+
+    @Column(name = "pdescription", nullable = false)
+    private String pcontent;
+
     @Column(name = "pphoto", nullable = false)
     private String pphoto;
 
