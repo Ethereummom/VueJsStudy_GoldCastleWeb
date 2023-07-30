@@ -60,22 +60,22 @@
                     <div class = "products">
                         <ul>
                             <!-- v-for 디렉티브 사용해서 반복렌더링-->
-                            <li v-for = "prod in prodList" :key = "prod.id" @click="goToProduct(prod.id)">
-                                <img :src= "imgdir" alt = "plh">
-                                <p>{{prod.name}}</p>
-                                <p>{{prod.price}}</p>
-                                <p>{{prod.desc}}</p>
+                            <li v-for = "prod in prodList" :key = "prod.pid" @click="goToProduct(prod.pid)">
+                                <img :src= "prod.pphoto" alt = "plh">
+                                <p>{{prod.pname}}</p>
+                                <p>{{prod.pcontent}}</p>
+                                <p>{{prod.pprice}}</p>
                             </li>
                         </ul>
                     </div>
                     <a @click = "goToPage(0)">[FIRST]</a>
-                    <a v-if = "currentPageNo > 0" @click="goToPage(currentPageNo -1)">[PRE]</a>
+                    <a v-if = "currentPageNo > 0" @click="goToPage(currentPageNo - 1)">[PRE]</a>
                     <a v-else>[PRE]</a>
 
-                    <a v-for ="page in ppiVO.pageCnt" :key = "page" @click="goToPage(page-1)">[{{page}}]</a>
-                    <a v-if = "currentPageNo < ppiVO.pageCnt-1" @click="goToPage(currentPageNo + 1)">[NEXT]</a>
+                    <a v-for ="page in totalPages" :key = "page" @click="goToPage(page)">[{{page}}]</a>
+                    <a v-if = "currentPageNo < totalPages -1 " @click="goToPage(currentPageNo + 1)">[NEXT]</a>
                     <a v-else>[NEXT]</a>
-                    <a @click = "goToPage(ppiVO.pageCnt-1)">[END]</a>
+                    <a @click = "goToPage(totalPages-1)">[END]</a>
                     <br> <a href = "/">홈으로 돌아가기</a>
                 </div>
             </div>
@@ -93,9 +93,13 @@ export default{
         return {
             activeTab : 1,
             prodList : [],
+            prod : {},
+            page : 1,
+            limit : 10,
             imgDir : "s3...",
             ppiVO : {},
             currentPageNo : 0,
+            totalPages : 0,
         };
     },
     methods : {
@@ -104,8 +108,17 @@ export default{
             this.activeTab = tabIndex;
             //TODO : 해당 탭에 맞는 상품 목록을 서버에서 가져오는 로직 필요
         },
-        goToPage(pageIndex){
-            this.currentPageNo = pageIndex;
+        goToPage(pageNumber){
+            this.currentPageNo = pageNumber;
+            axios.get(`http://localhost:8070/api/v1/products?page=${pageNumber}`)
+                .then(response => {
+                    this.prodList = response.data;
+                    console.log(response.data)
+
+                })
+                .catch(error => {
+                    console.error('데이터 불러오기 실패',error)
+                });
             //TODO : 해당 페이지 번호에 맞는 상품 목록을 서버에서 가져오는 로직(SPRING BACKEND SERVER)
         },
         //상품상세페이지로이동하기
@@ -114,9 +127,11 @@ export default{
         },
         fetchProductDataFromServer(){
             //axios를 사용하여 Spring server의 api endpoint에 get요청하기
-            axios.get('http://localhost:8070/v1/api/products')
+            axios.get('http://localhost:8070/api/v1/product/products')
             .then(response => {
-                this.prodList = response.data;
+                this.prodList = response.data.content;
+                this.totalPages = response.data.totalPages;
+                this.prod = this.prodList[0]
                 
             }).catch(error => {
                     console.error('데이터 가져오기 실패' , error);

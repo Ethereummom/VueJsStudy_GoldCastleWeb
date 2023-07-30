@@ -1,28 +1,33 @@
 package com.goldcastle.domain.product.controller;
 
+import com.goldcastle.domain.product.dto.ProductPaginationRequestDTO;
 import com.goldcastle.domain.product.dto.ProductResponseDTO;
+import com.goldcastle.domain.product.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
+    private final ProductService productService;
+
     //전체 상품
     @GetMapping("/products")
-    public ResponseEntity<List<ProductResponseDTO>>listProduct(){
-        return null;
+    public Page<ProductResponseDTO> listProduct(@ModelAttribute ProductPaginationRequestDTO requestDTO){
+
+        return productService.showAllProducts(requestDTO);
     }
 
     //상품 상세정보보기
     @GetMapping("/products/{pid}")
-    public ResponseEntity<List<ProductResponseDTO>>detailProduct(@PathVariable Long pid){
-        return null;
+    public ProductResponseDTO detailProduct(@PathVariable Long pid){
+        return productService.showProductDetails(pid);
     }
 
     //특정 순으로 소팅하기

@@ -9,10 +9,9 @@ spring:
   datasource:
     dbcp2:
       driver-class-name: org.mariadb.jdbc.Driver
-    url: godsaengdb.cpvbdgo8npm2.ap-northeast-2.rds.amazonaws.com:3306/jewelry
+    url: jdbc:mariadb://godsaengdb.cpvbdgo8npm2.ap-northeast-2.rds.amazonaws.com:3306/jewelry
     username: root
     password: rkdtlstjd
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 cloud:
   aws:
@@ -31,4 +30,4 @@ frontend:
     url:
 
 server:
-  port:8070
+  port: 8070

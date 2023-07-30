@@ -20,12 +20,22 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public Page<ProductResponseDTO>showProductDetails(Long pid, ProductPaginationRequestDTO requestDTO){
-        Pageable pageable = PageRequest.of(requestDTO.getPage(),requestDTO.getLimit());
+    public Page<ProductResponseDTO> showAllProducts(ProductPaginationRequestDTO dto){
+        Pageable pageable = PageRequest.of(dto.getPage() , dto.getLimit());
+        return productRepository.findAll(pageable).map(this::entityToDto);
+
+    }
+
+    public ProductResponseDTO showProductDetails(Long pid){
         Optional<Product> result = productRepository.findByPid(pid);
 
         if(result.isPresent()){
-            productinfo =
+            Product product = result.get();
+            ProductResponseDTO productinfo = entityToDto(product);
+            return productinfo;
+        }else {
+            return null;
+            //throw new ProductNotFoundException("상품이 존재하지 않습니다");
         }
     }
 

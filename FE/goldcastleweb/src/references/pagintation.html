@@ -1,0 +1,53 @@
+<template>
+    <div>
+      <a @click="goToPage(0)">[FIRST]</a>
+      <a v-if="currentPageNo > 0" @click="goToPage(currentPageNo - 1)">[PRE]</a>
+      <a v-else>[PRE]</a>
+  
+      <a v-for="page in totalPages" :key="page" @click="goToPage(page)">{{ page }}</a>
+  
+      <a v-if="currentPageNo < totalPages - 1" @click="goToPage(currentPageNo + 1)">[NEXT]</a>
+      <a v-else>[NEXT]</a>
+      <a @click="goToPage(totalPages - 1)">[END]</a>
+      <br>
+      <a href="/">홈으로 돌아가기</a>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        currentPageNo: 0, // 현재 페이지 번호
+        totalPages: 0, // 전체 페이지 수
+      };
+    },
+    mounted() {
+      this.fetchProductDataFromServer();
+    },
+    methods: {
+      fetchProductDataFromServer() {
+        // Spring Boot로 페이징된 데이터를 요청하여 전체 페이지 수를 받아옴
+        axios.get('http://localhost:8070/api/v1/products')
+          .then(response => {
+            this.totalPages = response.data.totalPages;
+          })
+          .catch(error => {
+            console.error('데이터 가져오기 실패', error);
+          });
+      },
+      goToPage(pageNumber) {
+        // 클라이언트 측에서 선택한 페이지 번호를 서버 측으로 전달하여 데이터를 요청
+        this.currentPageNo = pageNumber;
+        axios.get(`http://localhost:8070/api/v1/products?page=${pageNumber}`)
+          .then(response => {
+            // 받아온 데이터 처리 로직 작성
+          })
+          .catch(error => {
+            console.error('데이터 가져오기 실패', error);
+          });
+      },
+    },
+  };
+  </script>
+  
