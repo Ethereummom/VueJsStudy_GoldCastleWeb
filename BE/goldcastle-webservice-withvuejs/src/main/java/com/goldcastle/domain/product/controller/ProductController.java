@@ -24,9 +24,12 @@ public class ProductController {
         return productService.showAllProducts(requestDTO);
     }
 
+    //@GetMapping("/products/")
+
     //상품 상세정보보기
     @GetMapping("/products/{pid}")
     public ProductResponseDTO detailProduct(@PathVariable Long pid){
+        System.out.println("상품아이디 " + pid);
         return productService.showProductDetails(pid);
     }
 

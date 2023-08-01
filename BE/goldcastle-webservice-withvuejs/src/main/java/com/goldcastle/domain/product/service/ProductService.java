@@ -32,8 +32,10 @@ public class ProductService {
         if(result.isPresent()){
             Product product = result.get();
             ProductResponseDTO productinfo = entityToDto(product);
+            System.out.println("상품정보: " + productinfo.getPid());
             return productinfo;
         }else {
+            System.out.println("isnull?s");
             return null;
             //throw new ProductNotFoundException("상품이 존재하지 않습니다");
         }

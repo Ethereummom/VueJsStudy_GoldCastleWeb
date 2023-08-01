@@ -42,12 +42,12 @@
                     </div>
                     <div class = "sorting">
                         <label for = "sort">종류별로 보기</label>
-                        <select name = "" id = "SortBy">
-                            <option value = "">반지</option>
-                            <option value = "">목걸이</option>
-                            <option value = "">팔찌</option>
-                            <option value = "">발찌</option>
-                            <option value = ""></option>
+                        <select name = "" id = "SortBy" v-model = "selectedCategory">
+                            <option value = "">전체</option>
+                            <option value = "ring">반지</option>
+                            <option value = "necklace">목걸이</option>
+                            <option value = "bracelet">팔찌</option>
+                            <option value = "anklet">발찌</option>
                         </select>
                     </div>
                 </div>
@@ -60,11 +60,12 @@
                     <div class = "products">
                         <ul>
                             <!-- v-for 디렉티브 사용해서 반복렌더링-->
-                            <li v-for = "prod in prodList" :key = "prod.pid" @click="goToProduct(prod.pid)">
+                            <li v-for = "prod in sortedProducts" :key = "prod.pid" >
                                 <img :src= "prod.pphoto" alt = "plh">
                                 <p>{{prod.pname}}</p>
                                 <p>{{prod.pcontent}}</p>
                                 <p>{{prod.pprice}}</p>
+                                <a @click="goToProduct(prod.pid)">상세보기</a>
                             </li>
                         </ul>
                     </div>
@@ -100,6 +101,7 @@ export default{
             ppiVO : {},
             currentPageNo : 0,
             totalPages : 0,
+            selectedCategory : "",
         };
     },
     methods : {
@@ -123,7 +125,7 @@ export default{
         },
         //상품상세페이지로이동하기
         goToProduct(pid){
-
+                this.$router.push({name : 'productdetail', params : {pid:pid }});
         },
         fetchProductDataFromServer(){
             //axios를 사용하여 Spring server의 api endpoint에 get요청하기
@@ -131,13 +133,30 @@ export default{
             .then(response => {
                 this.prodList = response.data.content;
                 this.totalPages = response.data.totalPages;
-                this.prod = this.prodList[0]
+                this.prod = this.prodList[0];
+                console.log(this.prodList);
                 
             }).catch(error => {
                     console.error('데이터 가져오기 실패' , error);
                 });
 
         },
+        // handleSortByChange(event){
+        //     const selectedValue = event.target.value;
+        //     this.fetchProductsByCategory(selectedValue);
+
+        // }
+    },
+    computed : {
+        sortedProducts(){
+            console.log(this.selectedCategory)
+            if(this.selectedCategory === ""){
+                return this.prodList;
+            }else{
+                return this.prodList.filter((prod) => prod.pcategory === this.selectedCategory);
+            }
+        }
+
     },
     mounted(){
         //페이지가 로드 시 실행되는 코드

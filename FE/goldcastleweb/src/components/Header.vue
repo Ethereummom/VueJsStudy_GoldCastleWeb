@@ -80,12 +80,14 @@ export default {
 
         },
         goToProductPage(){
+            this.$router.push('/products');
 
         },
         goToMyPage(){
 
         },
         goToHomePage(){
+            this.$router.push('/')
 
         },
         goToContactPage(){
